@@ -100,12 +100,54 @@
             >
               <mat-icon>done</mat-icon>
             </button>
-
             <button mat-icon-button color="warn" type="button" aria-label="Close edit mode" (click)="onCloseEditMode()">
               <mat-icon>close</mat-icon>
             </button>
           </mat-card-actions>
         </form>
+        <mat-form-field 
+          class="edit-user-field"
+          [matTooltip]="vm.user!.totalStoryPoints.toString()"
+          [matTooltipDisabled]="totalStorypoints.enabled"
+        >
+          <mat-label>Количество сторипоинтов:</mat-label>
+          <input
+            matInput
+            placeholder="Количество сторипоинтов"
+            [formControl]="totalStorypoints"
+            class="edit-user-input number-input"
+            type="number"
+            min="0"
+          />
+          <button
+            *ngIf="totalStorypoints.disabled"
+            (click)="totalStorypoints.enable()"
+            mat-icon-button
+            matSuffix
+            aria-label="Add story points"
+          >
+            <mat-icon >add</mat-icon>
+          </button>
+          <button
+            *ngIf="totalStorypoints.enabled"
+            (click)="onStoryPointsSubmit()"
+            mat-icon-button
+            matSuffix
+            aria-label="submit story points"
+            [disabled]="totalStorypoints.invalid || (isStoryPointsFieldChanged$ | ngrxPush) === false"
+          >
+            <mat-icon>check</mat-icon>
+          </button>
+          <button
+            *ngIf="totalStorypoints.enabled"
+            (click)="totalStorypoints.disable()"
+            mat-icon-button
+            matSuffix
+            aria-label="close story points edit mode"
+          >
+            <mat-icon >close</mat-icon>
+          </button>
+        </mat-form-field>
       </mat-card>
     </div>
   </ng-container>
@@ -122,5 +164,11 @@
 <ng-template #snackbar>
   <div class="edit-user-snackbar">
     <span>Пользователь успешно изменён!</span>
+  </div>
+</ng-template>
+
+<ng-template #snackbarStoryPoints>
+  <div class="edit-user-snackbar">
+    <span>Сторипоинты успешно обновлены!</span>
   </div>
 </ng-template>
